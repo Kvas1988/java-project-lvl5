@@ -24,6 +24,9 @@ application {
 	mainClass = 'hexlet.code.app.AppApplication'
 }
 
+compileJava {
+	options.release = 17
+}
 
 //tasks.named('test') {
 //	useJUnitPlatform()
