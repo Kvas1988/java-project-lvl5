@@ -20,9 +20,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-//application {
-//	mainClass = 'hexlet.code.App'
-//}
+application {
+	mainClass = 'hexlet.code.app.AppApplication'
+}
 
 
 //tasks.named('test') {
