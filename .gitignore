@@ -1,0 +1,17 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+.idea
+.DS_Store
+
+# env vars for act tool
+my.secrets
+
+# dev db
+hexlet.mv.db
+hexlet.trace.db
+
+helpers.txt
