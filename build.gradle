@@ -28,10 +28,6 @@ compileJava {
 	options.release = 17
 }
 
-//tasks.named('test') {
-//	useJUnitPlatform()
-//}
-
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
@@ -44,7 +40,7 @@ jacocoTestReport {
 		csv.required = false
 		html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
 	}
+}
 
 task stage(dependsOn: ['clean', 'installDist'])
 installDist.mustRunAfter clean
-}
