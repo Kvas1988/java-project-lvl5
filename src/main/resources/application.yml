@@ -6,6 +6,9 @@ logging:
     root: INFO
 
 spring:
+  application:
+    name: taskManager
+
   datasource:
     url: jdbc:h2:./taskdb
     username: sa
