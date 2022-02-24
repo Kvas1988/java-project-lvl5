@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1645483118861-1
+    id: 1645690792335-1
     author: shokhin_al (generated)
     changes:
     - createTable:
@@ -9,7 +9,7 @@ databaseChangeLog:
             autoIncrement: true
             constraints:
               primaryKey: true
-              primaryKeyName: userPK
+              primaryKeyName: usersPK
             name: id
             type: BIGINT
         - column:
@@ -27,5 +27,11 @@ databaseChangeLog:
         - column:
             name: password
             type: VARCHAR(255)
-        tableName: user
+        tableName: users
+- changeSet:
+    id: 1645690792335-2
+    author: shokhin_al (generated)
+    changes:
+    - dropTable:
+        tableName: USER
 
