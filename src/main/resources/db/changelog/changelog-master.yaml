@@ -1,14 +1,14 @@
 databaseChangeLog:
 - changeSet:
-    id: 1645690792335-1
+    id: 1645819162865-1
     author: shokhin_al (generated)
     changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              primaryKey: true
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: UC_USERSEMAIL_COL
+        tableName: users
+
+   primaryKey: true
               primaryKeyName: usersPK
             name: id
             type: BIGINT
