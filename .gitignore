@@ -11,7 +11,7 @@ build
 my.secrets
 
 # dev db
-hexlet.mv.db
-hexlet.trace.db
+taskdb.mv.db
+taskdb.trace.db
 
 Helpers.md

@@ -67,7 +67,7 @@ diffChangeLog {
 liquibase {
 	activities {
 		main {
-			changeLogFile 'src/main/resources/db/changelog/changelog-master.yaml'
+			changeLogFile 'src/main/resources/db/changelog/changelog-master.xml'
 			url 'jdbc:h2:./taskdb'
 			username 'sa'
 			password ''
