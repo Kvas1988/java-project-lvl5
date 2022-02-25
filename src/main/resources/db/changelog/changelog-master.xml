@@ -15,4 +15,10 @@
     <changeSet author="shokhin_al (generated)" id="1645819977251-2">
         <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
     </changeSet>
+    <changeSet author="shokhin_al (generated)" id="1645820531554-1">
+        <dropUniqueConstraint constraintName="UC_USERSEMAIL_COL" tableName="users"/>
+    </changeSet>
+    <changeSet author="shokhin_al (generated)" id="1645820531554-2">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
+    </changeSet>
 </databaseChangeLog>
