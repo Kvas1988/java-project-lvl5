@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public User updateUser(@RequestBody @Valid UserDto user, @PathVariable long id) {
         return userService.updateUser(id, user);
     }

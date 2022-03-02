@@ -25,7 +25,7 @@ public class JWTTokenService implements TokenService, Clock {
     public JWTTokenService() {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.issuer = "issuer";
-        this.expSec = 1600L;
+        this.expSec = 10000L;
         this.clockSkewSec = 500L;
     }
 

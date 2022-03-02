@@ -27,6 +27,7 @@ import static hexlet.code.app.controller.AuthController.LOGIN_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
+    // private JWTAuthenticationFilter jwtAuthenticationFilter;
     TokenAuthenticationProvider authenticationProvider;
 
     private RequestMatcher publicUrls;
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.publicUrls = new OrRequestMatcher(
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, POST.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, GET.toString()),
+                new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, PUT.toString()),
                 new AntPathRequestMatcher(baseUrl + LOGIN_PATH, POST.toString()),
                 new NegatedRequestMatcher(new AntPathRequestMatcher(baseUrl + "/**"))
         );
@@ -67,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
+                // .addFilterBefore(jwtAuthenticationFilter, JWTAuthenticationFilter.class)
                 .sessionManagement().disable()
                 .formLogin().disable()
                 .logout().disable()
@@ -78,10 +81,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userDetailsService);
-    }
+    // @Override
+    // public void configure(AuthenticationManagerBuilder builder) throws Exception {
+    //     builder.userDetailsService(userDetailsService);
+    // }
 
     @Bean
     public JWTAuthenticationFilter restAuthenticationFilter() throws Exception {
