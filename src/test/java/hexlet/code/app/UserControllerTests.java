@@ -1,6 +1,6 @@
 package hexlet.code.app;
 
-import hexlet.code.app.service.JWTTokenService;
+import hexlet.code.app.security.TokenService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,13 +29,13 @@ import java.util.Map;
 @AutoConfigureMockMvc
 @Transactional
 @Sql("/data.sql")
-class AppApplicationTests {
+class UserControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
-	JWTTokenService tokenService;
+	private TokenService tokenService;
 
 	@Test
 	void testWelcomePage() throws Exception {
@@ -48,9 +48,20 @@ class AppApplicationTests {
 		assertEquals("Welcome to Spring", response.getContentAsString());
 	}
 
+	// testGetUserPositive
+	// testGetUsersPositive
+	// testCreateUserPositive
+	// testCreateUserInvalidData
+	// testUpdateUserPositive
+	// testUpdateUserInvalidData
+	// TODO testUpdateUserInvalidToken
+	// testDeleteUserPositive
+	// TODO testDeleteUserInvalidToken
+
+
 	@Test
 	void testGetUserPositive() throws Exception {
-		String token = tokenService.getToken(Map.of("email", "johnsmith@gmail.com"));
+		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse response = mockMvc
 				.perform(get("/api/users/1")
 							.header(AUTHORIZATION, token))
@@ -62,19 +73,8 @@ class AppApplicationTests {
 		assertThat(response.getContentAsString()).contains("John", "Smith");
 	}
 
-	// 401 (unauth) expected 404 -> rly should be 401 ?
-	// @Test
-	// void testGetUserNotFound() throws Exception {
-	// 	MockHttpServletResponse response = mockMvc
-	// 			.perform(get("/api/users/9999"))
-	// 			.andReturn()
-	// 			.getResponse();
-	//
-	// 	assertEquals(404, response.getStatus());
-	// }
-
 	@Test
-	void testGetUsers() throws Exception {
+	void testGetUsersPositive() throws Exception {
 		MockHttpServletResponse response = mockMvc
 				.perform(get("/api/users"))
 				.andReturn()
@@ -111,25 +111,27 @@ class AppApplicationTests {
 		assertThat(response.getContentAsString()).contains("Pavel", "Bure");
 	}
 
-	// Doesn't pass this test. DUNNO WHY
-	// @Test
-	// void testCreateUserInvalidData() throws Exception {
-	// 	MockHttpServletResponse responsePost = mockMvc
-	// 			.perform(post("/api/users")
-	// 					.contentType(MediaType.APPLICATION_JSON)
-	// 					.content("\"lastName\": \"Bure\", "
-	// 							+ "\"email\": \"pavelbure1971@gmail.com\", "
-	// 							+ "\"password\": \"password\"}"))
-	// 			.andReturn()
-	// 			.getResponse();
-	//
-	// 	assertEquals(422, responsePost.getStatus());
-	// 	// more tests on post response???
-	// }
+	@Test
+	void testCreateUserInvalidData() throws Exception {
+		// TODO count before
+
+		MockHttpServletResponse responsePost = mockMvc
+				.perform(post("/api/users")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{\"lastName\": \"Bure\", "
+								+ "\"email\": \"pavelbure1971@gmail.com\", "
+								+ "\"password\": \"password\"}"))
+				.andReturn()
+				.getResponse();
+
+		assertEquals(422, responsePost.getStatus());
+
+		// TODO request GET /api/users and count after
+	}
 
 	@Test
 	void testUpdateUserPositive() throws Exception {
-		String token = tokenService.getToken(Map.of("email", "johnsmith@gmail.com"));
+		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletRequestBuilder request = put("/api/users/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"firstName\": \"Pavel\", "
@@ -158,7 +160,7 @@ class AppApplicationTests {
 
 	@Test
 	void testUpdateUserInvalidData() throws Exception {
-		String token = tokenService.getToken(Map.of("email", "johnsmith@gmail.com"));
+		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responsePatch = mockMvc
 				.perform(put("/api/users/1")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -174,23 +176,23 @@ class AppApplicationTests {
 		// more tests on post response???
 	}
 
-	// 401 (unauth) expected 404 -> rly should be 401 ?
-	// @Test
-	// void testUpdateUserNotFound() throws Exception {
-	// 	MockHttpServletResponse responsePatch = mockMvc
-	// 			.perform(patch("/api/users/9999")
-	// 					.contentType(MediaType.APPLICATION_JSON)
-	// 					.content("{\"firstName\": \"Pavel\", "
-	// 							+ "\"lastName\": \"Bure\", "
-	// 							+ "\"password\": \"pass\", "
-	// 							+ "\"email\": \"bure@gmail.com\"}")
-	// 			)
-	// 			.andReturn()
-	// 			.getResponse();
-	//
-	// 	assertEquals(404, responsePatch.getStatus());
-	// 	// more tests on post response???
-	// }
+	@Test
+	void testUpdateUserInvalidToken() throws Exception {
+		String token = "Bearer " + tokenService.getToken(Map.of("username", "invalid@user.com"));
+		MockHttpServletResponse responsePatch = mockMvc
+				.perform(put("/api/users/1")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{\"firstName\": \"Pavel\", "
+								+ "\"lastName\": \"Bure\", "
+								+ "\"password\": \"pass\", "
+								+ "\"email\": \"bure@gmail.com\"}")
+						.header(AUTHORIZATION, token)
+				)
+				.andReturn()
+				.getResponse();
+
+		assertEquals(403, responsePatch.getStatus());
+	}
 
 	@Test
 	void testDeleteUserPositive() throws Exception {
@@ -205,7 +207,7 @@ class AppApplicationTests {
 		assertThat(response.getContentAsString()).contains("John", "Smith");
 
 		// delete user
-		String token = tokenService.getToken(Map.of("email", "johnsmith@gmail.com"));
+		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responseDelete = mockMvc
 				.perform(delete("/api/users/1")
 							.header(AUTHORIZATION, token))
@@ -226,16 +228,4 @@ class AppApplicationTests {
 		assertThat(response.getContentAsString()).doesNotContain("John", "Smith");
 	}
 
-	// 401 (unauth) expected 404 -> rly should be 401 ?
-	// @Test
-	// void testDeleteUserNotSuchUser() throws Exception {
-	// 	// check if user exists
-	// 	MockHttpServletResponse response = mockMvc
-	// 			.perform(delete("/api/users/9999"))
-	// 			.andReturn()
-	// 			.getResponse();
-	//
-	// 	assertEquals(404, response.getStatus());
-	// 	// more tests on post response???
-	// }
 }
