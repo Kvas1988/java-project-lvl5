@@ -2,14 +2,12 @@ package hexlet.code.app.config;
 
 import hexlet.code.app.security.CustomAuthenticationFilter;
 import hexlet.code.app.security.CustomAuthorizationFilter;
+import hexlet.code.app.security.JwtTokenServiceImpl;
 import hexlet.code.app.service.UserDetailsServiceImpl;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,8 +19,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.security.Key;
 
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpMethod.GET;
@@ -71,8 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                         .requestMatchers(publicUrls).permitAll()
                         .anyRequest().authenticated();
+
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenService)); // TODO: bean???
-        http.addFilterBefore(new CustomAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new CustomAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+
+
 
         // http
         //         .authorizeRequests()
@@ -92,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // TODO: cleanup
 
     // @Bean
     // public Key getKey() {

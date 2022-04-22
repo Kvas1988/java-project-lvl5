@@ -1,13 +1,15 @@
-package hexlet.code.app.config;
+package hexlet.code.app.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
@@ -16,9 +18,11 @@ import java.util.Map;
 public class JwtTokenServiceImpl implements TokenService {
 
     private final Key key;
+    private final UserDetailsService userDetailsService;
 
-    public JwtTokenServiceImpl() {
+    public JwtTokenServiceImpl(UserDetailsService userDetailsService) {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -42,5 +46,18 @@ public class JwtTokenServiceImpl implements TokenService {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token);
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = parse(token).getBody().getExpiration();
+        return expiration.after(new Date());
+    }
+
+    public Boolean validateToken(String token) {
+        String usernameFromToken = parse(token).getBody().getSubject();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+        Boolean isNameValid = usernameFromToken.equals(userDetails.getUsername());
+        Boolean isTokenExpired = isTokenExpired(token);
+        return isNameValid && isTokenExpired;
     }
 }

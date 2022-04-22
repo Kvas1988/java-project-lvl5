@@ -1,4 +1,4 @@
-package hexlet.code.app.config;
+package hexlet.code.app.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

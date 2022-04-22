@@ -1,13 +1,8 @@
 package hexlet.code.app.security;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import hexlet.code.app.config.JwtTokenServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,16 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.List;
 
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenServiceImpl tokenService;
+    private final JwtTokenServiceImpl tokenService; // TODO: interface ???
 
     public CustomAuthorizationFilter(JwtTokenServiceImpl tokenService) {
         this.tokenService = tokenService;
@@ -41,31 +34,30 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login")) { // TODO: check login path
             filterChain.doFilter(request, response);
         } else {
+            // TODO: think more about test for this piece of code
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                    // Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-                    // Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    //         .setSigningKey(key)
-                    //         .build()
-                    //         .parseClaimsJws(token);
                     Jws<Claims> claimsJws = tokenService.parse(token);
 
                     String username = claimsJws.getBody().getSubject();
+
                     // List<String> roles = claimsJws.getBody().get("roles",
                     //         new ArrayList<String>().getClass());
 
-                    // TODO: verify with SecurityContextHolder
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, null);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    if (tokenService.validateToken(token) ) {
+                        UsernamePasswordAuthenticationToken authenticationToken =
+                                new UsernamePasswordAuthenticationToken(username, null, null);
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
                     filterChain.doFilter(request, response);
 
-                } catch (JwtException e) {
+                } catch (Exception e) {
                     log.error("Logging error: " + e.getMessage());
                     e.printStackTrace();
                     // forbiden
+                    response.sendError(SC_FORBIDDEN);
                 }
             } else {
                 filterChain.doFilter(request, response);
