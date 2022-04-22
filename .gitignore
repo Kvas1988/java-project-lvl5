@@ -3,12 +3,17 @@
 
 # Ignore Gradle build output directory
 build
+bin
 
 .idea
 .DS_Store
+.classpath
+.project
+.settings/
 
 # env vars for act tool
 my.secrets
+comt.txt
 
 # dev db
 taskdb.mv.db

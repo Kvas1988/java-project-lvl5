@@ -54,9 +54,8 @@ class UserControllerTests {
 	// testCreateUserInvalidData
 	// testUpdateUserPositive
 	// testUpdateUserInvalidData
-	// TODO testUpdateUserInvalidToken
+	// testUpdateUserInvalidToken
 	// testDeleteUserPositive
-	// TODO testDeleteUserInvalidToken
 
 
 	@Test
@@ -191,7 +190,7 @@ class UserControllerTests {
 				.andReturn()
 				.getResponse();
 
-		assertEquals(403, responsePatch.getStatus());
+		assertEquals(401, responsePatch.getStatus());
 	}
 
 	@Test

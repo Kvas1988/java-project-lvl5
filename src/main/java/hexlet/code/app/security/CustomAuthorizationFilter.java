@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
@@ -57,7 +58,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Logging error: " + e.getMessage());
                     e.printStackTrace();
                     // forbiden
-                    response.sendError(SC_FORBIDDEN);
+                    response.sendError(SC_UNAUTHORIZED);
                 }
             } else {
                 filterChain.doFilter(request, response);
