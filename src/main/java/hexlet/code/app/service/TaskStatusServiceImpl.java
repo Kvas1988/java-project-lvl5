@@ -19,7 +19,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     @Override
     public TaskStatus createTaskStatus(TaskStatusDto taskStatusDto) {
         TaskStatus taskStatus = new TaskStatus();
-        taskStatus.setName(taskStatus.getName());
+        taskStatus.setName(taskStatusDto.getName());
         return repository.save(taskStatus);
     }
 
