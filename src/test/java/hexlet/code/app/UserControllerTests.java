@@ -1,5 +1,8 @@
 package hexlet.code.app;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.security.TokenService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,6 +39,9 @@ class UserControllerTests {
 
 	@Autowired
 	private TokenService tokenService;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Test
 	void testWelcomePage() throws Exception {
@@ -87,13 +93,12 @@ class UserControllerTests {
 
 	@Test
 	void testCreateUserPositive() throws Exception {
+		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
 		MockHttpServletResponse responsePost = mockMvc
 				.perform(post("/api/users")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content("{\"firstName\": \"Pavel\", "
-								+ "\"lastName\": \"Bure\", "
-								+ "\"email\": \"pavelbure1971@gmail.com\", "
-								+ "\"password\": \"password\"}"))
+						.content(objectMapper.writeValueAsString(userDto))
+				)
 				.andReturn()
 				.getResponse();
 
@@ -113,13 +118,12 @@ class UserControllerTests {
 	@Test
 	void testCreateUserInvalidData() throws Exception {
 		// TODO count before
-
+		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
 		MockHttpServletResponse responsePost = mockMvc
 				.perform(post("/api/users")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content("{\"lastName\": \"Bure\", "
-								+ "\"email\": \"pavelbure1971@gmail.com\", "
-								+ "\"password\": \"password\"}"))
+						.content(objectMapper.writeValueAsString(userDto))
+				)
 				.andReturn()
 				.getResponse();
 
@@ -131,12 +135,10 @@ class UserControllerTests {
 	@Test
 	void testUpdateUserPositive() throws Exception {
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
+		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
 		MockHttpServletRequestBuilder request = put("/api/users/1")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"firstName\": \"Pavel\", "
-						+ "\"lastName\": \"Bure\", "
-						+ "\"password\": \"pass\", "
-						+ "\"email\": \"bure@gmail.com\"}")
+				.content(objectMapper.writeValueAsString(userDto))
 				.header(AUTHORIZATION, token);
 
 		MockHttpServletResponse responsePatch = mockMvc
@@ -145,7 +147,6 @@ class UserControllerTests {
 				.getResponse();
 
 		assertEquals(200, responsePatch.getStatus());
-		// more tests on post response???
 
 		MockHttpServletResponse response = mockMvc
 				.perform(get("/api/users"))
@@ -159,32 +160,28 @@ class UserControllerTests {
 
 	@Test
 	void testUpdateUserInvalidData() throws Exception {
+		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responsePatch = mockMvc
 				.perform(put("/api/users/1")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content("{\"firstName\": \"Pavel\", "
-								+ "\"password\": \"pass\", "
-								+ "\"email\": \"bure@gmail.com\"}")
+						.content(objectMapper.writeValueAsString(userDto))
 						.header(AUTHORIZATION, token)
 				)
 				.andReturn()
 				.getResponse();
 
 		assertEquals(422, responsePatch.getStatus());
-		// more tests on post response???
 	}
 
 	@Test
 	void testUpdateUserInvalidToken() throws Exception {
+		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "invalid@user.com"));
 		MockHttpServletResponse responsePatch = mockMvc
 				.perform(put("/api/users/1")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content("{\"firstName\": \"Pavel\", "
-								+ "\"lastName\": \"Bure\", "
-								+ "\"password\": \"pass\", "
-								+ "\"email\": \"bure@gmail.com\"}")
+						.content(objectMapper.writeValueAsString(userDto))
 						.header(AUTHORIZATION, token)
 				)
 				.andReturn()
@@ -226,5 +223,4 @@ class UserControllerTests {
 		assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
 		assertThat(response.getContentAsString()).doesNotContain("John", "Smith");
 	}
-
 }

@@ -1,6 +1,7 @@
 package hexlet.code.app;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.security.TokenService;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class TaskStatusControllerTests {
     private TokenService tokenService;
 
     @Autowired
-    ObjectMapper mapper;// = new ObjectMapper();
+    ObjectMapper objectMapper;
 
     // testGetAllTaskStatuses
     // testGetTaskStatusPositive
@@ -80,11 +81,12 @@ public class TaskStatusControllerTests {
 
     @Test
     void testCreateTaskStatusPositive() throws Exception {
+        TaskStatusDto taskStatusDto = new TaskStatusDto("New Status For Tests");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/statuses")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"New Status For Tests\"}") // TODO: make data from dto object.toJson() ???
+                        .content(objectMapper.writeValueAsString(taskStatusDto))
                         .header(AUTHORIZATION, token))
                 .andReturn()
                 .getResponse();
@@ -103,16 +105,17 @@ public class TaskStatusControllerTests {
 
         assertEquals(200, response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
-        assertThat(response.getContentAsString()).contains("New Status For Tests");
+        assertThat(response.getContentAsString()).contains(taskStatusDto.getName());
     }
 
     @Test
     void testCreateTaskStatusNegativeInvalidData() throws Exception {
+        TaskStatusDto taskStatusDto = new TaskStatusDto("");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/statuses")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"\"}")
+                        .content(objectMapper.writeValueAsString(taskStatusDto))
                         .header(AUTHORIZATION, token))
                 .andReturn()
                 .getResponse();
@@ -123,10 +126,11 @@ public class TaskStatusControllerTests {
     @Test
     void testCreateTaskStatusNoToken() throws Exception {
         // Create without token header
+        TaskStatusDto taskStatusDto = new TaskStatusDto("New Status For Tests");
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/statuses")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"New Status For Tests\"}") // TODO: make data from dto object.toJson() ???
+                        .content(objectMapper.writeValueAsString(taskStatusDto))
                 )
                 .andReturn()
                 .getResponse();
@@ -142,7 +146,7 @@ public class TaskStatusControllerTests {
 
         assertEquals(200, response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
-        assertThat(response.getContentAsString()).doesNotContain("New Status For Tests");
+        assertThat(response.getContentAsString()).doesNotContain(taskStatusDto.getName());
     }
 
     @Test
@@ -157,14 +161,14 @@ public class TaskStatusControllerTests {
         assertEquals(200, response.getStatus());
 
         // get init status name
-        TaskStatus initStatus = mapper.readValue(response.getContentAsString(), TaskStatus.class);
+        TaskStatus initStatus = objectMapper.readValue(response.getContentAsString(), TaskStatus.class);
 
         // update
-        String newName = "New Status For Tests"; // TDO!!!
+        TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletRequestBuilder request = put("/api/statuses/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"New Status For Tests\"}")
+                .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
 
         MockHttpServletResponse patchResponse = mockMvc
@@ -181,7 +185,7 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat(response.getContentAsString()).contains(newName);
+        assertThat(response.getContentAsString()).contains(updateTaskStatusDto.getName());
         assertThat( response.getContentAsString() ).doesNotContain(initStatus.getName());
     }
 
@@ -197,13 +201,14 @@ public class TaskStatusControllerTests {
         assertEquals(200, response.getStatus());
 
         // get init status name
-        TaskStatus initStatus = mapper.readValue(response.getContentAsString(), TaskStatus.class);
+        TaskStatus initStatus = objectMapper.readValue(response.getContentAsString(), TaskStatus.class);
 
         // update
+        TaskStatusDto updateTaskStatusDto = new TaskStatusDto("");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletRequestBuilder request = put("/api/statuses/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"\"}")
+                .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
 
         MockHttpServletResponse patchResponse = mockMvc
@@ -235,13 +240,13 @@ public class TaskStatusControllerTests {
         assertEquals(200, response.getStatus());
 
         // get init status name
-        TaskStatus initStatus = mapper.readValue(response.getContentAsString(), TaskStatus.class);
+        TaskStatus initStatus = objectMapper.readValue(response.getContentAsString(), TaskStatus.class);
 
         // update
-        String newName = "New Status For Tests"; // TDO!!!
+        TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
         MockHttpServletRequestBuilder request = put("/api/statuses/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"New Status For Tests\"}");
+                .content(objectMapper.writeValueAsString(updateTaskStatusDto));
 
         MockHttpServletResponse patchResponse = mockMvc
                 .perform(request)
@@ -257,7 +262,7 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat(response.getContentAsString()).doesNotContain(newName);
+        assertThat(response.getContentAsString()).doesNotContain(updateTaskStatusDto.getName());
         assertThat( response.getContentAsString() ).contains(initStatus.getName());
     }
 }
