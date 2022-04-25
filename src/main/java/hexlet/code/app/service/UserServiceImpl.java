@@ -3,12 +3,16 @@ package hexlet.code.app.service;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
+import hexlet.code.app.security.TokenService;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public User createUser(UserDto givenUser) {
@@ -61,5 +68,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getCurrentUser(String authHeader) {
+        if (!(authHeader != null && authHeader.startsWith("Bearer "))) {
+            throw new JwtException("invalid token");
+        }
+        String token = authHeader.substring("Bearer ".length());
+        String email = tokenService.parse(token).getBody().getSubject();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
+
     }
 }

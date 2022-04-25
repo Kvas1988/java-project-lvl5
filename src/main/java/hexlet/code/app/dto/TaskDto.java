@@ -2,7 +2,9 @@ package hexlet.code.app.dto;
 
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.JoinColumn;
@@ -13,6 +15,8 @@ import java.util.Date;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaskDto {
 
     //TODO WIP...

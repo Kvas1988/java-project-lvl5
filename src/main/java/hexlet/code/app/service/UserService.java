@@ -10,4 +10,5 @@ public interface UserService {
     void deleteUser(Long id);
     User getUser(Long id);
     Iterable<User> getAllUsers();
+    User getCurrentUser(String authHeader);
 }
