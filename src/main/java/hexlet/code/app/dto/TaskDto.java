@@ -1,5 +1,6 @@
 package hexlet.code.app.dto;
 
+import hexlet.code.app.model.Label;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +21,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class TaskDto {
 
-    //TODO WIP...
     @NotBlank
     @NotNull
     private String name;
@@ -30,4 +31,6 @@ public class TaskDto {
     private Long taskStatusId;
 
     private Long executorId;
+
+    private List<Long> labelsIds;
 }

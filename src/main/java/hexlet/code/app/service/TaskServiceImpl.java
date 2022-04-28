@@ -1,22 +1,22 @@
 package hexlet.code.app.service;
 
 import hexlet.code.app.dto.TaskDto;
+import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
-import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -26,15 +26,18 @@ public class TaskServiceImpl implements TaskService {
     private final TaskStatusService taskStatusService;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final LabelRepository labelRepository;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            TaskStatusService taskStatusService,
                            UserService userService,
-                           UserRepository userRepository) {
+                           UserRepository userRepository,
+                           LabelRepository labelRepository) {
         this.taskRepository = taskRepository;
         this.taskStatusService = taskStatusService;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.labelRepository = labelRepository;
     }
 
     @Override
@@ -53,6 +56,11 @@ public class TaskServiceImpl implements TaskService {
             User executor = userRepository.findById(givenTask.getExecutorId())
                     .orElse(null);
             task.setExecutor(executor);
+        }
+
+        if (givenTask.getLabelsIds() != null) {
+            List<Label> labels = labelRepository.findAllById(givenTask.getLabelsIds());
+            task.setLabels(new HashSet<>(labels));
         }
 
         return taskRepository.save(task);
@@ -76,6 +84,10 @@ public class TaskServiceImpl implements TaskService {
             User executor = userRepository.findById(newData.getExecutorId())
                     .orElse(null);
             task.setExecutor(executor);
+        }
+        if (newData.getLabelsIds() != null) {
+            List<Label> labels = labelRepository.findAllById(newData.getLabelsIds());
+            task.setLabels(new HashSet<>(labels));
         }
 
         return taskRepository.save(task);
