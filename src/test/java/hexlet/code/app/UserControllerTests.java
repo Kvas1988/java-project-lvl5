@@ -68,7 +68,7 @@ class UserControllerTests {
 	void testGetUserPositive() throws Exception {
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse response = mockMvc
-				.perform(get("/api/users/1")
+				.perform(get("/api/users/51")
 							.header(AUTHORIZATION, token))
 				.andReturn()
 				.getResponse();
@@ -117,7 +117,7 @@ class UserControllerTests {
 
 	@Test
 	void testCreateUserInvalidData() throws Exception {
-		// TODO count before
+		// create
 		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
 		MockHttpServletResponse responsePost = mockMvc
 				.perform(post("/api/users")
@@ -129,14 +129,22 @@ class UserControllerTests {
 
 		assertEquals(422, responsePost.getStatus());
 
-		// TODO request GET /api/users and count after
+		// check
+		MockHttpServletResponse response = mockMvc
+				.perform(get("/api/users"))
+				.andReturn()
+				.getResponse();
+
+		assertEquals(200, response.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
+		assertThat(response.getContentAsString()).doesNotContain(userDto.getEmail());
 	}
 
 	@Test
 	void testUpdateUserPositive() throws Exception {
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
-		MockHttpServletRequestBuilder request = put("/api/users/1")
+		MockHttpServletRequestBuilder request = put("/api/users/51")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(userDto))
 				.header(AUTHORIZATION, token);
@@ -163,7 +171,7 @@ class UserControllerTests {
 		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responsePatch = mockMvc
-				.perform(put("/api/users/1")
+				.perform(put("/api/users/51")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(userDto))
 						.header(AUTHORIZATION, token)
@@ -179,7 +187,7 @@ class UserControllerTests {
 		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "invalid@user.com"));
 		MockHttpServletResponse responsePatch = mockMvc
-				.perform(put("/api/users/1")
+				.perform(put("/api/users/51")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(userDto))
 						.header(AUTHORIZATION, token)
@@ -205,7 +213,7 @@ class UserControllerTests {
 		// delete user
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responseDelete = mockMvc
-				.perform(delete("/api/users/1")
+				.perform(delete("/api/users/51")
 							.header(AUTHORIZATION, token))
 				.andReturn()
 				.getResponse();

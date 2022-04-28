@@ -74,7 +74,7 @@ public class TaskControllerTests {
     void testGetTaskPositive() throws Exception {
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/51")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -87,7 +87,7 @@ public class TaskControllerTests {
 
     @Test
     void testCreateTaskPositive() throws Exception {
-        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L);
+        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/tasks")
@@ -114,7 +114,8 @@ public class TaskControllerTests {
 
     @Test
     void testCreateTaskNegativeInvalidData() throws Exception {
-        TaskDto taskDto = new TaskDto("", "", null, null);
+        // create
+        TaskDto taskDto = new TaskDto("invalid", "", null, null, null);
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/tasks")
@@ -126,12 +127,24 @@ public class TaskControllerTests {
                 .getResponse();
 
         assertEquals(422, postResponse.getStatus());
+
+        // check
+        MockHttpServletResponse response = mockMvc
+                .perform(get("/api/tasks")
+                        .header(AUTHORIZATION, token)
+                )
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
+        assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
+        assertThat(response.getContentAsString()).doesNotContain(taskDto.getName());
     }
 
     @Test
     void testCreateTaskNoToken() throws Exception {
         // Create without token header
-        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L);
+        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +176,7 @@ public class TaskControllerTests {
         // get current status
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -175,8 +188,8 @@ public class TaskControllerTests {
         Task initTask = objectMapper.readValue(response.getContentAsString(), Task.class);
 
         // update
-        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 1L, 22L);
-        MockHttpServletRequestBuilder request = put("/api/tasks/2")
+        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
+        MockHttpServletRequestBuilder request = put("/api/tasks/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskDto))
                 .header(AUTHORIZATION, token);
@@ -190,7 +203,7 @@ public class TaskControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -207,7 +220,7 @@ public class TaskControllerTests {
         // get current status
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -219,8 +232,8 @@ public class TaskControllerTests {
         Task initTask = objectMapper.readValue(response.getContentAsString(), Task.class);
 
         // update
-        TaskDto taskDto = new TaskDto("", "", null, null);
-        MockHttpServletRequestBuilder request = put("/api/tasks/2")
+        TaskDto taskDto = new TaskDto("", "", null, null, null);
+        MockHttpServletRequestBuilder request = put("/api/tasks/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(taskDto))
                 .header(AUTHORIZATION, token);
@@ -234,7 +247,7 @@ public class TaskControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -250,7 +263,7 @@ public class TaskControllerTests {
         // get current status
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token))
                 .andReturn()
                 .getResponse();
@@ -261,7 +274,7 @@ public class TaskControllerTests {
         Task initTask = objectMapper.readValue(response.getContentAsString(), Task.class);
 
         // update
-        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 1L, 22L);
+        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
         MockHttpServletRequestBuilder request = put("/api/tasks/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskDto));
@@ -275,7 +288,7 @@ public class TaskControllerTests {
 
         // check status
         response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -289,9 +302,9 @@ public class TaskControllerTests {
     @Test
     void testDeleteTaskPositive() throws Exception {
         // get current task
-        String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
+        String token = "Bearer " + tokenService.getToken(Map.of("username", "jassicasimpson@gmail.com"));
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -305,7 +318,7 @@ public class TaskControllerTests {
         // delete
 
         MockHttpServletResponse patchResponse = mockMvc
-                .perform(delete("/api/tasks/2")
+                .perform(delete("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -332,7 +345,7 @@ public class TaskControllerTests {
         String invalidToken = "Bearer " + tokenService.getToken(Map.of("username", "jackdow@gmail.com"));
 
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/tasks/2")
+                .perform(get("/api/tasks/52")
                         .header(AUTHORIZATION, token)
                 )
                 .andReturn()
@@ -345,7 +358,7 @@ public class TaskControllerTests {
 
         // delete
         MockHttpServletResponse patchResponse = mockMvc
-                .perform(delete("/api/tasks/2")
+                .perform(delete("/api/tasks/52")
                         .header(AUTHORIZATION, invalidToken)
                 )
                 .andReturn()

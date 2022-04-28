@@ -50,6 +50,8 @@ public class TaskStatusControllerTests {
     // testUpdateTaskStatusPositive
     // testUpdateTaskStatusNegativeInvalidData
     // testUpdateTaskStatusNoToken
+    // testDeleteTaskStatusPositive
+    // testDeleteTaskStatusNoToken
 
 
     @Test
@@ -62,22 +64,19 @@ public class TaskStatusControllerTests {
         assertEquals(200, response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
         assertThat(response.getContentAsString()).contains("new");
-        // assertThat(response.getContentAsString()).contains("В работе");
     }
 
     @Test
     void testGetTaskStatusPositive() throws Exception {
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses"))
+                .perform(get("/api/statuses/54"))
                 .andReturn()
                 .getResponse();
 
         assertEquals(200, response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
-        assertThat(response.getContentAsString()).contains("new");
+        assertThat(response.getContentAsString()).contains("done");
     }
-
-    // void testGetTaskStatusNegative
 
     @Test
     void testCreateTaskStatusPositive() throws Exception {
@@ -92,11 +91,6 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, postResponse.getStatus());
-
-        // get id from postResponse
-        // TaskStatus createdTaskStatus = mapper.readValue(postResponse.getContentAsString(), TaskStatus.class);
-        // Long taskStatusId = createdTaskStatus.getId();
-        // TODO: check id ???
 
         MockHttpServletResponse response = mockMvc
                 .perform(get("/api/statuses"))
@@ -154,7 +148,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
@@ -166,7 +160,7 @@ public class TaskStatusControllerTests {
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
-        MockHttpServletRequestBuilder request = put("/api/statuses/1")
+        MockHttpServletRequestBuilder request = put("/api/statuses/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
@@ -180,7 +174,7 @@ public class TaskStatusControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
@@ -194,7 +188,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
@@ -206,7 +200,7 @@ public class TaskStatusControllerTests {
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
-        MockHttpServletRequestBuilder request = put("/api/statuses/1")
+        MockHttpServletRequestBuilder request = put("/api/statuses/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
@@ -220,7 +214,7 @@ public class TaskStatusControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
@@ -233,7 +227,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
@@ -244,7 +238,7 @@ public class TaskStatusControllerTests {
 
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
-        MockHttpServletRequestBuilder request = put("/api/statuses/1")
+        MockHttpServletRequestBuilder request = put("/api/statuses/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto));
 
@@ -257,12 +251,77 @@ public class TaskStatusControllerTests {
 
         // check status
         response = mockMvc
-                .perform(get("/api/statuses/1"))
+                .perform(get("/api/statuses/2"))
                 .andReturn()
                 .getResponse();
 
         assertEquals(200, response.getStatus());
         assertThat(response.getContentAsString()).doesNotContain(updateTaskStatusDto.getName());
+        assertThat( response.getContentAsString() ).contains(initStatus.getName());
+    }
+
+    @Test
+    void testDeleteTaskStatusPositive() throws Exception {
+        // get current status
+        MockHttpServletResponse response = mockMvc
+                .perform(get("/api/statuses/54"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
+
+        // get init status name
+        TaskStatus initStatus = objectMapper.readValue(response.getContentAsString(), TaskStatus.class);
+
+        // delete
+        String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
+        MockHttpServletResponse patchResponse = mockMvc
+                .perform(delete("/api/statuses/54")
+                        .header(AUTHORIZATION, token)
+                )
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, patchResponse.getStatus());
+
+        // check status
+        response = mockMvc
+                .perform(get("/api/statuses"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
+        assertThat( response.getContentAsString() ).doesNotContain(initStatus.getName());
+    }
+
+    @Test
+    void testDeleteTaskStatusNoToken() throws Exception {
+        // get current status
+        MockHttpServletResponse response = mockMvc
+                .perform(get("/api/statuses/2"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
+
+        // get init status name
+        TaskStatus initStatus = objectMapper.readValue(response.getContentAsString(), TaskStatus.class);
+
+        // delete
+        MockHttpServletResponse patchResponse = mockMvc
+                .perform(delete("/api/statuses/2"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(403, patchResponse.getStatus());
+
+        // check status
+        response = mockMvc
+                .perform(get("/api/statuses"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
         assertThat( response.getContentAsString() ).contains(initStatus.getName());
     }
 }
