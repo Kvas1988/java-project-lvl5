@@ -1,5 +1,6 @@
 package hexlet.code.app.service;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
@@ -58,8 +59,8 @@ public class TaskServiceImpl implements TaskService {
             task.setExecutor(executor);
         }
 
-        if (givenTask.getLabelsIds() != null) {
-            List<Label> labels = labelRepository.findAllById(givenTask.getLabelsIds());
+        if (givenTask.getLabelIds() != null) {
+            List<Label> labels = labelRepository.findAllById(givenTask.getLabelIds());
             task.setLabels(new HashSet<>(labels));
         }
 
@@ -85,8 +86,8 @@ public class TaskServiceImpl implements TaskService {
                     .orElse(null);
             task.setExecutor(executor);
         }
-        if (newData.getLabelsIds() != null) {
-            List<Label> labels = labelRepository.findAllById(newData.getLabelsIds());
+        if (newData.getLabelIds() != null) {
+            List<Label> labels = labelRepository.findAllById(newData.getLabelIds());
             task.setLabels(new HashSet<>(labels));
         }
 
