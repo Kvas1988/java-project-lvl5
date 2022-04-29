@@ -21,9 +21,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenServiceImpl tokenService; // TODO: interface ???
+    private final TokenService tokenService;
 
-    public CustomAuthorizationFilter(JwtTokenServiceImpl tokenService) {
+    public CustomAuthorizationFilter(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
@@ -32,10 +32,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().equals("/login")) { // TODO: check login path
+        if (request.getServletPath().equals("/api/login")) {
             filterChain.doFilter(request, response);
         } else {
-            // TODO: think more about test for this piece of code
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {

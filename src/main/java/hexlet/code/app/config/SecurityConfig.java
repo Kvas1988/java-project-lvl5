@@ -76,23 +76,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .requestMatchers(publicUrls).permitAll()
                         .anyRequest().authenticated();
 
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenService)); // TODO: bean???
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenService));
         http.addFilterAfter(new CustomAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 
-
-
-        // http
-        //         .authorizeRequests()
-        //         .requestMatchers(publicUrls).permitAll()
-        //         .anyRequest().authenticated()
-        //         .and()
-        //         .authenticationProvider(authenticationProvider)
-        //         .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
-        //         // .addFilterBefore(jwtAuthenticationFilter, JWTAuthenticationFilter.class)
-        //         .sessionManagement().disable()
-        //         .formLogin().disable()
-        //         .logout().disable()
-        // ;
     }
 
     @Bean
@@ -100,25 +86,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // TODO: cleanup
-
-    // @Bean
-    // public Key getKey() {
-    //     return Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    // }
-
-
-    // @Bean
-    // public JWTAuthenticationFilter restAuthenticationFilter() throws Exception {
-    //     JWTAuthenticationFilter filter = new JWTAuthenticationFilter(protectedUrls);
-    //     filter.setAuthenticationManager(authenticationManager());
-    //     filter.setAuthenticationSuccessHandler(successHandler());
-    //     return filter;
-    // }
-
-    // private SimpleUrlAuthenticationSuccessHandler successHandler() {
-    //     SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-    //     successHandler.setRedirectStrategy(((request, response, url) -> { }));
-    //     return successHandler;
-    // }
 }

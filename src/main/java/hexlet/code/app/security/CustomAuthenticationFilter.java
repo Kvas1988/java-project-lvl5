@@ -43,10 +43,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-        // super.successfulAuthentication(request, response, chain, authResult);
-        // TODO: video implemented with other lib
-
-        String jws = tokenService.getToken(Map.of("username", request.getParameter("username"))); // TODO:???
+        String jws = tokenService.getToken(Map.of("username", request.getParameter("username")));
         response.setHeader("access_token", jws);
     }
 }

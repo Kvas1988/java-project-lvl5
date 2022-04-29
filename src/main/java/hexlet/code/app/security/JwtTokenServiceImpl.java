@@ -35,7 +35,7 @@ public class JwtTokenServiceImpl implements TokenService {
                 .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .setIssuer("issuer")
                 // .setIssuer(request.getRequestURL().toString())
-                // .setClaims(roles) // TODO: do I need to set claims with authority role
+                // .setClaims(roles)
                 .compact();
     }
 
