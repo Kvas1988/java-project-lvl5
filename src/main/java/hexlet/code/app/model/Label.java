@@ -29,8 +29,8 @@ public class Label {
     @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "labels")
-    private Set<Task> tasks;
+    // @ManyToMany(mappedBy = "labels")
+    // private Set<Task> tasks;
 
     @CreationTimestamp
     private Date createdAt;
