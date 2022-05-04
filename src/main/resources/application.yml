@@ -7,9 +7,12 @@ logging:
   level:
     root: INFO
 
+
 spring:
   application:
     name: taskManager
+  jpa:
+    show-sql: true
 
   mvc:
     hiddenmethod:
@@ -31,3 +34,6 @@ spring:
       settings:
         web-allow-others: true
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
