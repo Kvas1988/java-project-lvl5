@@ -2,6 +2,10 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.AuthDto;
 import hexlet.code.app.service.TokenAuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +24,14 @@ public class LoginController {
     private final TokenAuthenticationService authenticationService;
 
     @PostMapping
-    public String login(@RequestBody AuthDto authDto) {
+    @Operation(summary = "Login request")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logged in"),
+            @ApiResponse(responseCode = "404", description = "Bad credentials")
+    })
+    public String login(
+            @Parameter(description = "Email and password data")
+            @RequestBody AuthDto authDto) {
         return authenticationService.login(authDto.getEmail(), authDto.getPassword());
     }
 }

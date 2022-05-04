@@ -6,7 +6,12 @@ import hexlet.code.app.model.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import hexlet.code.app.service.TaskServiceImpl;
-import org.hibernate.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
@@ -40,31 +45,77 @@ public class TaskController {
     }
 
     @GetMapping("")
-    public Iterable<Task> getAllTasks(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+    @Operation(summary = "Get list of all Tasks")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of all Tasks",
+                content = @Content( mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request")
+    })
+
+    public Iterable<Task> getAllTasks(
+            @Parameter(description = "Querydsl predicate")
+            @QuerydslPredicate(root = Task.class) Predicate predicate) {
         return taskRepository.findAll(predicate);
         // return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public Task getTask(@PathVariable long id) {
+    @Operation(summary = "Get Task by given id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task's data",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class) )),
+            @ApiResponse(responseCode = "404", description = "No Task with such id"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request")
+    })
+    public Task getTask(
+            @Parameter(description = "Task's id")
+            @PathVariable long id) {
         return taskService.getTask(id);
     }
 
     @PostMapping
+    @Operation(summary = "Create new Task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task created",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request")
+    })
     public Task createTask(@RequestHeader(AUTHORIZATION) String authHeader,
+                           @Parameter(description = "Task's data")
                            @RequestBody @Valid TaskDto newTask) {
         return taskService.createTask(authHeader, newTask);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update Task with given id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task update",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+            @ApiResponse(responseCode = "404", description = "No Label with such id"),
+            @ApiResponse(responseCode = "422", description = "Invalid data given")
+    })
     public Task updateTask(@RequestBody @Valid TaskDto taskDto,
                            @PathVariable long id) {
         return taskService.updateTask(id, taskDto);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task deleted",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+            @ApiResponse(responseCode = "404", description = "No Label with such id")
+    })
     public ResponseEntity<String> deleteTask(@RequestHeader(AUTHORIZATION) String authHeader,
-                                     @PathVariable long id) {
+                                             @Parameter(description = "Task's id", required = true)
+                                             @PathVariable long id) {
         return taskService.deleteTask(authHeader, id);
     }
 }

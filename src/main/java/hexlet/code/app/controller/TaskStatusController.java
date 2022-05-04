@@ -5,6 +5,12 @@ import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
 import hexlet.code.app.service.TaskStatusServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,27 +36,72 @@ public class TaskStatusController {
     }
 
     @GetMapping("/{id}")
-    public TaskStatus getTaskStatus(@PathVariable long id) {
+    @Operation(summary = "Get TaskStatus by given id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "TaskStatus data",
+            content = @Content( mediaType = "application/json",
+                    schema = @Schema(implementation = TaskStatus.class) )),
+        @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+        @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
+    })
+    public TaskStatus getTaskStatus(@Parameter(description = "TaskStatus's id")
+                                    @PathVariable long id) {
         return taskStatusService.getTaskStatus(id);
     }
 
     @GetMapping
+    @Operation(summary = "Get list of all TaskStatuses")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "List of all TaskStatuses",
+            content = @Content( mediaType = "application/json",
+                    schema = @Schema(implementation = TaskStatus.class) ))
+    })
     public Iterable<TaskStatus> getAllTaskStatuses() {
         return taskStatusService.getAllTaskStatuses();
     }
 
     @PostMapping
-    public TaskStatus createTaskStatus(@RequestBody @Valid TaskStatusDto taskStatusDto) {
+    @Operation(summary = "Create new TaskStatus")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "TaskStatuses created",
+                content = @Content( mediaType = "application/json",
+                        schema = @Schema(implementation = TaskStatus.class) )),
+        @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+            @ApiResponse(responseCode = "422", description = "Invalid data given")
+    })
+    public TaskStatus createTaskStatus(@Parameter(description = "new TaskStatus data")
+                                       @RequestBody @Valid TaskStatusDto taskStatusDto) {
         return taskStatusService.createTaskStatus(taskStatusDto);
     }
 
     @PutMapping("/{id}")
-    public TaskStatus updateTaskStatus(@PathVariable long id, @RequestBody @Valid TaskStatusDto taskStatusDto) {
+    @Operation(summary = "Update TaskStatus with given id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "TaskStatuses updated",
+                    content = @Content( mediaType = "application/json",
+                            schema = @Schema(implementation = TaskStatus.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+            @ApiResponse(responseCode = "422", description = "Invalid data given"),
+            @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
+    })
+    public TaskStatus updateTaskStatus(@Parameter(description = "TaskStatus id")
+                                       @PathVariable long id,
+                                       @Parameter(description = "new TaskStatus data")
+                                       @RequestBody @Valid TaskStatusDto taskStatusDto) {
         return taskStatusService.updateTaskStatus(id, taskStatusDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTaskStatus(@PathVariable long id) {
+    @Operation(summary = "Delete TaskStatus with given id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "TaskStatuses deleted",
+                    content = @Content( mediaType = "application/json",
+                            schema = @Schema(implementation = TaskStatus.class) )),
+            @ApiResponse(responseCode = "403", description = "Unauthorized request"),
+            @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
+    })
+    public void deleteTaskStatus(@Parameter(description = "TaskStatus id")
+                                 @PathVariable long id) {
         taskStatusService.deleteTaskStatus(id);
     }
 }
