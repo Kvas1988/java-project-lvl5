@@ -88,7 +88,7 @@ public class TaskControllerTests {
 
     @Test
     void testCreateTaskPositive() throws Exception {
-        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
+        TaskDto taskDto = new TaskDto("test task", "test task desc", 51L, 52L, null);
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/tasks")
@@ -189,7 +189,7 @@ public class TaskControllerTests {
         Task initTask = objectMapper.readValue(response.getContentAsString(), Task.class);
 
         // update
-        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
+        TaskDto updateTaskDto = new TaskDto("test task", "test task desc", 51L, 52L, null);
         MockHttpServletRequestBuilder request = put("/api/tasks/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskDto))

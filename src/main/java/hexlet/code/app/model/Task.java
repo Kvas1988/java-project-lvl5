@@ -37,7 +37,7 @@ public class Task {
 
     @NotNull
     @ManyToOne
-    private TaskStatus taskStatus; // TODO join column ???
+    private TaskStatus taskStatus;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

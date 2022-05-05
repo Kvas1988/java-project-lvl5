@@ -148,7 +148,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -160,7 +160,7 @@ public class TaskStatusControllerTests {
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
-        MockHttpServletRequestBuilder request = put("/api/statuses/2")
+        MockHttpServletRequestBuilder request = put("/api/statuses/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
@@ -174,7 +174,7 @@ public class TaskStatusControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -188,7 +188,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -200,7 +200,7 @@ public class TaskStatusControllerTests {
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("");
         String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
-        MockHttpServletRequestBuilder request = put("/api/statuses/2")
+        MockHttpServletRequestBuilder request = put("/api/statuses/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto))
                 .header(AUTHORIZATION, token);
@@ -214,7 +214,7 @@ public class TaskStatusControllerTests {
 
         // check updated status
         response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -227,7 +227,7 @@ public class TaskStatusControllerTests {
 
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -238,7 +238,7 @@ public class TaskStatusControllerTests {
 
         // update
         TaskStatusDto updateTaskStatusDto = new TaskStatusDto("New Status For Tests");
-        MockHttpServletRequestBuilder request = put("/api/statuses/2")
+        MockHttpServletRequestBuilder request = put("/api/statuses/52")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTaskStatusDto));
 
@@ -251,7 +251,7 @@ public class TaskStatusControllerTests {
 
         // check status
         response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -298,7 +298,7 @@ public class TaskStatusControllerTests {
     void testDeleteTaskStatusNoToken() throws Exception {
         // get current status
         MockHttpServletResponse response = mockMvc
-                .perform(get("/api/statuses/2"))
+                .perform(get("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
@@ -309,7 +309,7 @@ public class TaskStatusControllerTests {
 
         // delete
         MockHttpServletResponse patchResponse = mockMvc
-                .perform(delete("/api/statuses/2"))
+                .perform(delete("/api/statuses/52"))
                 .andReturn()
                 .getResponse();
 
