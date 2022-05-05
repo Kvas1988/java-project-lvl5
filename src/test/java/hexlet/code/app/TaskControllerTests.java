@@ -54,6 +54,7 @@ public class TaskControllerTests {
     // testUpdateTaskNoToken
     // testDeleteTaskPositive
     // testDeleteTaskInvalidToken
+    // TODO requests with queries e.g. ...?taskStatus=1
 
     @Test
     void testGetAllTasks() throws Exception {
@@ -144,7 +145,7 @@ public class TaskControllerTests {
     @Test
     void testCreateTaskNoToken() throws Exception {
         // Create without token header
-        TaskDto taskDto = new TaskDto("test task", "test task desc", 1L, 22L, null);
+        TaskDto taskDto = new TaskDto("wash the dishes", "use hot water for a very dirty ones", 1L, 22L, null);
         MockHttpServletResponse postResponse = mockMvc
                 .perform(post("/api/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
