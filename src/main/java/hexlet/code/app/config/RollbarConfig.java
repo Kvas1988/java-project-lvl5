@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 })
 public class RollbarConfig {
 
-    @Value("${rollbar_token}")
+    @Value("${ROLLBAR_TOKEN}")
     String token;
 
     @Value("${SPRING_PROFILES_ACTIVE:dev}")
