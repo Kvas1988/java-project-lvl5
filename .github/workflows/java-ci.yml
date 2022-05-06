@@ -17,6 +17,8 @@ jobs:
 
       - name: Build with Gradle
         run: make build
+        env:
+          - ROLLBAR_TOKEN: ${{secrets.ROLBAR_TOKEN}}
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
