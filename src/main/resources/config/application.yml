@@ -7,33 +7,18 @@ logging:
   level:
     root: INFO
 
-
 spring:
   application:
     name: taskManager
-  jpa:
-    show-sql: true
 
   mvc:
     hiddenmethod:
       filter:
         enabled: true
 
-  datasource:
-    url: jdbc:h2:./taskdb
-    username: sa
-    password:
-
   liquibase:
 #    change-log: classpath:db/changelog/changelog-master.xml
     change-log: classpath:db/changelog/db.changelog-master.yaml
-
-  h2:
-    console:
-      enabled: true
-      path: /h2console/
-      settings:
-        web-allow-others: true
 
 springdoc:
   swagger-ui:
