@@ -97,7 +97,7 @@ public class TaskControllerTests {
                 .andReturn()
                 .getResponse();
 
-        assertEquals(200, postResponse.getStatus());
+        assertEquals(201, postResponse.getStatus());
 
         MockHttpServletResponse response = mockMvc
                 .perform(get("/api/tasks")

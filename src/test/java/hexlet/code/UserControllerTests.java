@@ -100,7 +100,7 @@ class UserControllerTests {
 				.andReturn()
 				.getResponse();
 
-		assertEquals(200, responsePost.getStatus());
+		assertEquals(201, responsePost.getStatus());
 		// more tests on post response???
 
 		MockHttpServletResponse response = mockMvc
