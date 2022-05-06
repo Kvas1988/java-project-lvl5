@@ -24,9 +24,6 @@ public class RollbarConfig {
     @Value("${SPRING_PROFILES_ACTIVE:dev}")
     String env;
 
-    /**
-     * Register a Rollbar bean to configure App with Rollbar.
-     */
     @Bean
     public Rollbar rollbar() {
         return new Rollbar(getRollbarConfigs(token));

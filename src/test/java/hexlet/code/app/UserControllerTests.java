@@ -1,6 +1,5 @@
 package hexlet.code.app;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.security.TokenService;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -93,7 +91,7 @@ class UserControllerTests {
 
 	@Test
 	void testCreateUserPositive() throws Exception {
-		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
+		UserDto userDto = new UserDto( "bure@gmail.com", "Pavel", "Bure", "pass");
 		MockHttpServletResponse responsePost = mockMvc
 				.perform(post("/api/users")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +116,7 @@ class UserControllerTests {
 	@Test
 	void testCreateUserInvalidData() throws Exception {
 		// create
-		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
+		UserDto userDto = new UserDto("bure@gmail.com", "", "Bure", "pass");
 		MockHttpServletResponse responsePost = mockMvc
 				.perform(post("/api/users")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -143,7 +141,7 @@ class UserControllerTests {
 	@Test
 	void testUpdateUserPositive() throws Exception {
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
-		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
+		UserDto userDto = new UserDto("bure@gmail.com", "Pavel", "Bure", "pass");
 		MockHttpServletRequestBuilder request = put("/api/users/51")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(userDto))
@@ -168,7 +166,7 @@ class UserControllerTests {
 
 	@Test
 	void testUpdateUserInvalidData() throws Exception {
-		UserDto userDto = new UserDto( "bure@gmail.com","", "Bure", "pass");
+		UserDto userDto = new UserDto("bure@gmail.com", "", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "johnsmith@gmail.com"));
 		MockHttpServletResponse responsePatch = mockMvc
 				.perform(put("/api/users/51")
@@ -184,7 +182,7 @@ class UserControllerTests {
 
 	@Test
 	void testUpdateUserInvalidToken() throws Exception {
-		UserDto userDto = new UserDto( "bure@gmail.com","Pavel", "Bure", "pass");
+		UserDto userDto = new UserDto("bure@gmail.com", "Pavel", "Bure", "pass");
 		String token = "Bearer " + tokenService.getToken(Map.of("username", "invalid@user.com"));
 		MockHttpServletResponse responsePatch = mockMvc
 				.perform(put("/api/users/51")

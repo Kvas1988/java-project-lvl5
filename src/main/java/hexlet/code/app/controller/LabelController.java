@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -27,8 +26,7 @@ import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 @RequestMapping("${base-url}" + LABEL_CONTROLLER_PATH)
 public class LabelController {
 
-    public final static String LABEL_CONTROLLER_PATH = "/labels";
-
+    public static final String LABEL_CONTROLLER_PATH = "/labels";
     private final LabelService labelService;
 
     public LabelController(LabelService labelService) {

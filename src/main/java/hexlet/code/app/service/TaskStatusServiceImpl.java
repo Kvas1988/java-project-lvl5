@@ -2,10 +2,8 @@ package hexlet.code.app.service;
 
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;

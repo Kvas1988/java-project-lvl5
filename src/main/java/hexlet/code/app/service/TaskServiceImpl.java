@@ -1,6 +1,5 @@
 package hexlet.code.app.service;
 
-import com.querydsl.core.types.Predicate;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Service
 @Slf4j

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDto givenUser) {
-        if(userRepository.findByEmail(givenUser.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(givenUser.getEmail()).isPresent()) {
             throw new DuplicateKeyException("User with such email already exists");
         }
 

@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
 
         List<SimpleGrantedAuthority> authorityList = List.of(new SimpleGrantedAuthority("USER"));
-        // TODO: is it correct auth list ?
 
         User user = userRepository.findByEmail(mail)
                 .orElseThrow(() -> new NoSuchElementException());

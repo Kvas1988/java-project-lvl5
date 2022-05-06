@@ -2,16 +2,13 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
-import hexlet.code.app.service.TaskStatusServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +24,7 @@ import javax.validation.Valid;
 @RequestMapping("${base-url}" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH)
 public class TaskStatusController {
 
-    public final static String TASK_STATUS_CONTROLLER_PATH = "/statuses";
+    public static final String TASK_STATUS_CONTROLLER_PATH = "/statuses";
 
     private final TaskStatusService taskStatusService;
 

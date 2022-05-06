@@ -2,9 +2,7 @@ package hexlet.code.app;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.dto.LabelDto;
-import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.Label;
-import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.security.TokenService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
