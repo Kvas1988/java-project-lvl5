@@ -77,6 +77,18 @@ class UserControllerTests {
 	}
 
 	@Test
+	void testGetUserNoToken() throws Exception {
+		MockHttpServletResponse response = mockMvc
+				.perform(get("/api/users/51"))
+				.andReturn()
+				.getResponse();
+
+		assertEquals(200, response.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON.toString(), response.getContentType());
+		assertThat(response.getContentAsString()).contains("John", "Smith");
+	}
+
+	@Test
 	void testGetUsersPositive() throws Exception {
 		MockHttpServletResponse response = mockMvc
 				.perform(get("/api/users"))
