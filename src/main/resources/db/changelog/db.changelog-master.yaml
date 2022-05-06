@@ -1,0 +1,138 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001. Create table users
+      author: shokhin_al
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: users_PK
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+  - changeSet:
+      id: 002. Unique Constraint users.email
+      author: shokhin_al
+      changes:
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: email
+            constraintName: UC_USERMAIL_COL
+  - changeSet:
+      id: 003. Create table task_status
+      author: shokhin_al
+      changes:
+        - createTable:
+            tableName: task_status
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: task_status_PK
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+  - changeSet:
+      id: 004. Create table tasks
+      author: shokhin_al
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: task_PK
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: task_status_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: FK_TASKS_TASKTATUS
+                    references: task_status(id)
+              - column:
+                  name: author_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: FK_TASKS_AUTHOR
+                    references: users(id)
+              - column:
+                  name: executor_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: FK_TASKS_EXECUTOR
+                    references: users(id)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+  - changeSet:
+      id: 005. Create table labels
+      author: shokhin_al
+      changes:
+        - createTable:
+            tableName: labels
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: labels_PK
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+  - changeSet:
+      id: 006. Tasks Labels Relationship
+      author: shokhin_al
+      changes:
+        - createTable:
+            tableName: tasks_labels
+            columns:
+              - column:
+                  name: task_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: FK_TASKS_LABELS_TASK_ID
+                    references: tasks(id)
+              - column:
+                  name: label_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: FK_TASKS_LABELS_LABEL_ID
+                    references: labels(id)
