@@ -34,17 +34,19 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (authorizationHeader != null) {
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
-                    Jws<Claims> claimsJws = tokenService.parse(token);
+                    if (authorizationHeader.startsWith("Bearer ")) {
+                        authorizationHeader = authorizationHeader.substring("Bearer ".length());
+                    }
+                    Jws<Claims> claimsJws = tokenService.parse(authorizationHeader);
 
                     String username = claimsJws.getBody().getSubject();
 
                     // List<String> roles = claimsJws.getBody().get("roles",
                     //         new ArrayList<String>().getClass());
 
-                    if (tokenService.validateToken(token)) {
+                    if (tokenService.validateToken(authorizationHeader)) {
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(username, null, null);
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

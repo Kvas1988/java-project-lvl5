@@ -29,7 +29,7 @@ public class TokenAuthenticationService implements AuthenticationService {
     public String login(String email, String password) {
         return userRepository.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .map(user -> "Bearer " + tokenService.getToken(Map.of("username", email)))
+                .map(user -> tokenService.getToken(Map.of("username", email)))
                 .orElseThrow(() -> new NoSuchElementException("invalid login and/or password"));
     }
 
