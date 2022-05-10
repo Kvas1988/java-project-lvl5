@@ -40,7 +40,7 @@ public class TaskControllerTests {
     private TokenService tokenService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     // testGetAllTasks
     // testGetTaskPositive
@@ -210,7 +210,7 @@ public class TaskControllerTests {
 
         assertEquals(200, response.getStatus());
         assertThat(response.getContentAsString()).contains(updateTaskDto.getName());
-        assertThat( response.getContentAsString() ).doesNotContain(initTask.getName());
+        assertThat(response.getContentAsString()).doesNotContain(initTask.getName());
     }
 
     @Test
@@ -253,7 +253,7 @@ public class TaskControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initTask.getName());
+        assertThat(response.getContentAsString()).contains(initTask.getName());
     }
 
     @Test
@@ -295,7 +295,7 @@ public class TaskControllerTests {
 
         assertEquals(200, response.getStatus());
         assertThat(response.getContentAsString()).doesNotContain(updateTaskDto.getName());
-        assertThat( response.getContentAsString() ).contains(initTask.getName());
+        assertThat(response.getContentAsString()).contains(initTask.getName());
     }
 
     @Test
@@ -334,7 +334,7 @@ public class TaskControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).doesNotContain(initStatus.getName());
+        assertThat(response.getContentAsString()).doesNotContain(initStatus.getName());
     }
 
     @Test
@@ -374,6 +374,6 @@ public class TaskControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initStatus.getName());
+        assertThat(response.getContentAsString()).contains(initStatus.getName());
     }
 }

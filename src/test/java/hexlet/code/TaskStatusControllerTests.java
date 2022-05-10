@@ -39,7 +39,7 @@ public class TaskStatusControllerTests {
     private TokenService tokenService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     // testGetAllTaskStatuses
     // testGetTaskStatusPositive
@@ -179,7 +179,7 @@ public class TaskStatusControllerTests {
 
         assertEquals(200, response.getStatus());
         assertThat(response.getContentAsString()).contains(updateTaskStatusDto.getName());
-        assertThat( response.getContentAsString() ).doesNotContain(initStatus.getName());
+        assertThat(response.getContentAsString()).doesNotContain(initStatus.getName());
     }
 
     @Test
@@ -218,7 +218,7 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initStatus.getName());
+        assertThat(response.getContentAsString()).contains(initStatus.getName());
     }
 
     @Test
@@ -256,7 +256,7 @@ public class TaskStatusControllerTests {
 
         assertEquals(200, response.getStatus());
         assertThat(response.getContentAsString()).doesNotContain(updateTaskStatusDto.getName());
-        assertThat( response.getContentAsString() ).contains(initStatus.getName());
+        assertThat(response.getContentAsString()).contains(initStatus.getName());
     }
 
     @Test
@@ -290,7 +290,7 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).doesNotContain(initStatus.getName());
+        assertThat(response.getContentAsString()).doesNotContain(initStatus.getName());
     }
 
     @Test
@@ -321,6 +321,6 @@ public class TaskStatusControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initStatus.getName());
+        assertThat(response.getContentAsString()).contains(initStatus.getName());
     }
 }

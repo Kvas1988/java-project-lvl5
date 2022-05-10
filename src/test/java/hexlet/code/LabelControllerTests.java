@@ -39,7 +39,7 @@ public class LabelControllerTests {
     private TokenService tokenService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     // testGetAllLabelsPositive
     // testGetAllLabelsNoToken
@@ -269,7 +269,7 @@ public class LabelControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initLabel.getName());
+        assertThat(response.getContentAsString()).contains(initLabel.getName());
     }
 
     @Test
@@ -311,8 +311,8 @@ public class LabelControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initLabel.getName());
-        assertThat( response.getContentAsString() ).doesNotContain(updateLabelDto.getName());
+        assertThat(response.getContentAsString()).contains(initLabel.getName());
+        assertThat(response.getContentAsString()).doesNotContain(updateLabelDto.getName());
     }
 
     @Test
@@ -351,7 +351,7 @@ public class LabelControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).doesNotContain(initLabel.getName());
+        assertThat(response.getContentAsString()).doesNotContain(initLabel.getName());
     }
 
     @Test
@@ -387,6 +387,6 @@ public class LabelControllerTests {
                 .getResponse();
 
         assertEquals(200, response.getStatus());
-        assertThat( response.getContentAsString() ).contains(initLabel.getName());
+        assertThat(response.getContentAsString()).contains(initLabel.getName());
     }
 }
