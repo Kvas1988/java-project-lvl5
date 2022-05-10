@@ -48,7 +48,7 @@ public class Task {
     private User executor;
 
     @CreationTimestamp
-    Date createdAt;
+    private Date createdAt;
 
     @ManyToMany
     @JoinTable(

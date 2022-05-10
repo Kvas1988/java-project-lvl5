@@ -38,8 +38,8 @@ public class LabelController {
     @GetMapping("")
     @Operation(summary = "Get list of all Labels")
     @ApiResponse(responseCode = "200", description = "List of all Labels",
-        content = @Content( mediaType = "application/json",
-                schema = @Schema(implementation = Label.class) )
+        content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Label.class))
     )
     public Iterable<Label> getAllLabels() {
         return labelService.getAllLabels();
@@ -49,8 +49,8 @@ public class LabelController {
     @Operation(summary = "Get Label by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Label's data",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = Label.class) )),
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Label.class))),
             @ApiResponse(responseCode = "404", description = "No Label with such id")
     })
     public Label getLabel(
@@ -64,11 +64,11 @@ public class LabelController {
     @Operation(summary = "Create new Label")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Label created",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = Label.class) )),
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Label.class))),
             @ApiResponse(responseCode = "422", description = "Invalid data given",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = Label.class) ))
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Label.class)))
     })
     public Label createLabel(
             @Parameter(description = "Label's data to be created", required = true)
@@ -80,8 +80,8 @@ public class LabelController {
     @Operation(summary = "Update Label with given id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Label updated",
-                    content = @Content( mediaType = "application/json",
-                        schema = @Schema(implementation = Label.class) )),
+                    content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = Label.class))),
             @ApiResponse(responseCode = "422", description = "Invalid data given"),
             @ApiResponse(responseCode = "404", description = "No Label with such id")
     })

@@ -25,19 +25,19 @@ public class User {
     private long id;
 
     @NotBlank
-    String firstName;
+    private String firstName;
 
     @NotBlank
-    String lastName;
+    private String lastName;
 
     @Column(unique = true)
-    String email;
+    private String email;
 
     @NotBlank
     @Size(min = 3)
     @JsonIgnore
-    String password;
+    private String password;
 
     @CreationTimestamp
-    Date createdAt;
+    private Date createdAt;
 }

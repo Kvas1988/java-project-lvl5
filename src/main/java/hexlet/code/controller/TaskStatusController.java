@@ -38,8 +38,8 @@ public class TaskStatusController {
     @Operation(summary = "Get TaskStatus by given id")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "TaskStatus data",
-            content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = TaskStatus.class) )),
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TaskStatus.class))),
         @ApiResponse(responseCode = "403", description = "Unauthorized request"),
         @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
     })
@@ -52,8 +52,8 @@ public class TaskStatusController {
     @Operation(summary = "Get list of all TaskStatuses")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "List of all TaskStatuses",
-            content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = TaskStatus.class) ))
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TaskStatus.class)))
     })
     public Iterable<TaskStatus> getAllTaskStatuses() {
         return taskStatusService.getAllTaskStatuses();
@@ -64,8 +64,8 @@ public class TaskStatusController {
     @Operation(summary = "Create new TaskStatus")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "TaskStatuses created",
-                content = @Content( mediaType = "application/json",
-                        schema = @Schema(implementation = TaskStatus.class) )),
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = TaskStatus.class))),
         @ApiResponse(responseCode = "403", description = "Unauthorized request"),
             @ApiResponse(responseCode = "422", description = "Invalid data given")
     })
@@ -78,8 +78,8 @@ public class TaskStatusController {
     @Operation(summary = "Update TaskStatus with given id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "TaskStatuses updated",
-                    content = @Content( mediaType = "application/json",
-                            schema = @Schema(implementation = TaskStatus.class) )),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskStatus.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request"),
             @ApiResponse(responseCode = "422", description = "Invalid data given"),
             @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
@@ -95,8 +95,8 @@ public class TaskStatusController {
     @Operation(summary = "Delete TaskStatus with given id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "TaskStatuses deleted",
-                    content = @Content( mediaType = "application/json",
-                            schema = @Schema(implementation = TaskStatus.class) )),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskStatus.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request"),
             @ApiResponse(responseCode = "404", description = "No TaskStatus with such id")
     })

@@ -48,8 +48,8 @@ public class TaskController {
     @Operation(summary = "Get list of all Tasks")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all Tasks",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = Task.class) )),
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Task.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request")
     })
 
@@ -65,7 +65,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task's data",
                 content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Task.class) )),
+                    schema = @Schema(implementation = Task.class))),
             @ApiResponse(responseCode = "404", description = "No Task with such id"),
             @ApiResponse(responseCode = "403", description = "Unauthorized request")
     })
@@ -81,7 +81,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Task created",
                 content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Task.class) )),
+                    schema = @Schema(implementation = Task.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request")
     })
     public Task createTask(@RequestHeader(AUTHORIZATION) String authHeader,
@@ -95,7 +95,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task update",
                 content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Task.class) )),
+                    schema = @Schema(implementation = Task.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request"),
             @ApiResponse(responseCode = "404", description = "No Label with such id"),
             @ApiResponse(responseCode = "422", description = "Invalid data given")
@@ -110,7 +110,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task deleted",
                 content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Task.class) )),
+                    schema = @Schema(implementation = Task.class))),
             @ApiResponse(responseCode = "403", description = "Unauthorized request"),
             @ApiResponse(responseCode = "404", description = "No Label with such id")
     })

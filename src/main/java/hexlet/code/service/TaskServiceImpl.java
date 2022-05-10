@@ -98,7 +98,7 @@ public class TaskServiceImpl implements TaskService {
         Task currentTask = taskRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such task"));
 
-        if ( !(user.getId() == currentTask.getAuthor().getId()) ) {
+        if (!(user.getId() == currentTask.getAuthor().getId())) {
             log.error("Only author can delete his tasks");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

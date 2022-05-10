@@ -44,7 +44,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     // List<String> roles = claimsJws.getBody().get("roles",
                     //         new ArrayList<String>().getClass());
 
-                    if (tokenService.validateToken(token) ) {
+                    if (tokenService.validateToken(token)) {
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(username, null, null);
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

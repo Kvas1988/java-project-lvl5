@@ -1,5 +1,5 @@
 INSERT INTO users (ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD) VALUES
-    (51, 'John', 'Smith', 'johnsmith@gmail.com', 'password'),
+    (51, 'John', 'Smith', 'johnsmith@gmail.com', '$2a$12$0UsYG03BflS3lME9lE1Fh.riiUQJ/8ma35iNaWKw3cc1R3OvFLTGK'),
     (52, 'Jack', 'Doe', 'jackdow@gmail.com', 'password'),
     (53, 'Jassica', 'Simpson', 'jassicasimpson@gmail.com', 'password'),
     (54, 'Robert', 'Lock', 'robertlock@gmail.com', 'password');

@@ -36,8 +36,8 @@ public class UserController {
     @GetMapping("")
     @Operation(summary = "Get All Users")
     @ApiResponse(responseCode = "200", description = "List of all Users",
-        content = @Content( mediaType = "application/json",
-            schema = @Schema(implementation = User.class) )
+        content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class))
     )
     public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
@@ -47,8 +47,8 @@ public class UserController {
     @Operation(summary = "Get User by specified id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User's data",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = User.class) )),
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "404", description = "No User with such id")
     })
     public User getUser(
@@ -63,7 +63,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User's data",
                 content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = User.class) )),
+                    schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "422", description = "Invalid data given")
     })
     public User createUser(
@@ -89,8 +89,8 @@ public class UserController {
     @Operation(summary = "Update User with given id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated",
-                content = @Content( mediaType = "application/json",
-                    schema = @Schema(implementation = User.class) )),
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "422", description = "Invalid data given"),
             @ApiResponse(responseCode = "404", description = "No User with such id"),
             @ApiResponse(responseCode = "403", description = "Unauthorized request")

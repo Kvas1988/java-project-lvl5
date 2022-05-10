@@ -35,6 +35,6 @@ public class TokenAuthenticationService implements AuthenticationService {
 
     @Override
     public Optional<User> findByToken(String token) {
-        return userRepository.findByEmail( tokenService.parse(token).getBody().getSubject().toString() );
+        return userRepository.findByEmail(tokenService.parse(token).getBody().getSubject().toString());
     }
 }
