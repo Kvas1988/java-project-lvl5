@@ -1,0 +1,63 @@
+{
+  "users": {
+    "existing": {
+      "email": "johnsmith@gmail.com",
+      "password": "password",
+      "firstName": "John",
+      "lastName": "Smith"
+    },
+    "new": {
+      "email": "pavelbure@gmail.com",
+      "password": "password",
+      "firstName": "Pavel",
+      "lastName": "Bure"
+    }
+  },
+
+  "labels": {
+    "existing": {
+      "name": "BUG"
+    },
+    "new": {
+      "name": "new label"
+    }
+  },
+
+  "statuses": {
+    "existing": {
+      "name": "new"
+    },
+    "new": {
+      "name": "debug"
+    }
+  },
+
+  "tasks": {
+    "first": {
+      "description": "init description task",
+      "name": "init task",
+      "executorEmail": "johnsmith@gmail.com",
+      "statusName": "new",
+      "label1Name": "ENH",
+      "label2Name": "first good issue"
+    },
+
+    "second": {
+      "description": "another task description",
+      "name": "another task",
+      "executorEmail": "jackdoe@gmail.com",
+      "statusName": "wip",
+      "label1Name": "BUG",
+      "label2Name": "first good issue"
+    },
+
+    "third": {
+      "description": "third task description",
+      "name": "third task",
+      "executorEmail": "robertlock@gmail.com",
+      "statusName": "wip",
+      "label1Name": "ENH",
+      "label2Name": "first good issue"
+    }
+  }
+}

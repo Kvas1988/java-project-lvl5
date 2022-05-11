@@ -1,0 +1,22 @@
+[
+  {
+    "id": 51,
+    "name": "BUG",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 52,
+    "name": "DOC",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 53,
+    "name": "ENH",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 54,
+    "name": "first good issue",
+    "createdAt": "2022-01-01"
+  }
+]

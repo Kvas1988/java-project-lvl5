@@ -34,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null) {
+            if (authorizationHeader != null && !authorizationHeader.equals("")) {
                 try {
                     String token = authorizationHeader;
                     if (authorizationHeader.startsWith("Bearer ")) {

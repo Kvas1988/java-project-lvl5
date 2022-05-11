@@ -70,10 +70,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser(String authHeader) {
-        if (!(authHeader != null && authHeader.startsWith("Bearer "))) {
+        if (authHeader == null || authHeader.equals("")) {
             throw new JwtException("invalid token");
         }
-        String token = authHeader.substring("Bearer ".length());
+        String token = authHeader;
+        if (authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring("Bearer ".length());
+        }
         String email = tokenService.parse(token).getBody().getSubject();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));

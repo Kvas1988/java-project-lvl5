@@ -1,0 +1,22 @@
+[
+  {
+    "id": 51,
+    "name": "new",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 52,
+    "name": "wip",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 53,
+    "name": "review",
+    "createdAt": "2022-01-01"
+  },
+  {
+    "id": 54,
+    "name": "done",
+    "createdAt": "2022-01-01"
+  }
+]

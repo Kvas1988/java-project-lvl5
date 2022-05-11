@@ -1,0 +1,37 @@
+{
+  "first": {
+    "id": 51,
+    "createdAt": "2022-01-01",
+    "description": "init description task",
+    "name": "init task",
+    "authorId": 53,
+    "executorEmail": "johnsmith@gmail.com",
+    "statusName": "new",
+    "label1Name": "BUG",
+    "label2Name": "first good issue"
+  },
+
+  "second": {
+    "id": 52,
+    "createdAt": "2022-01-02",
+    "description": "another init task description",
+    "name": "another task",
+    "authorId": 53,
+    "executorEmail": "jackdoe@gmail.com",
+    "statusName": "wip",
+    "label1Name": "BUG",
+    "label2Name": "first good issue"
+  },
+
+  "third": {
+    "id": 53,
+    "createdAt": "2022-01-03",
+    "description": "third task description",
+    "name": "third task",
+    "authorId": 53,
+    "executorEmail": "robertlock@gmail.com",
+    "statusName": "done",
+    "label1Name": "BUG",
+    "label2Name": "first good issue"
+  }
+}

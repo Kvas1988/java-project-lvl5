@@ -67,7 +67,7 @@ compileJava {
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
-	exclude '**/project/**'
+//	exclude '**/project/**'
 }
 
 jacocoTestReport {
