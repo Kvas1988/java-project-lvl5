@@ -2,7 +2,7 @@ package hexlet.code.controller;
 
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
-import hexlet.code.service.UserServiceImpl;
+import hexlet.code.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,18 +11,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
@@ -79,10 +82,10 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "No User with such id"),
             @ApiResponse(responseCode = "403", description = "Unauthorized request")
     })
-    public void deleteUser(
-            @Parameter(description = "User's id", required = true)
+    public ResponseEntity<String> deleteUser(@RequestHeader(AUTHORIZATION) String authHeader,
+                                     @Parameter(description = "User's id", required = true)
             @PathVariable long id) {
-        userService.deleteUser(id);
+        return userService.deleteUser(authHeader, id);
     }
 
     @PutMapping("/{id}")

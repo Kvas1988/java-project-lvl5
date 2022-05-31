@@ -1,17 +1,22 @@
-package hexlet.code.service;
+package hexlet.code.service.impl;
 
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.security.TokenService;
+import hexlet.code.service.UserService;
 import io.jsonwebtoken.JwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -50,11 +55,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public ResponseEntity<String> deleteUser(String authHeader, Long id) {
+        User currentUser = getCurrentUser(authHeader);
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(""));
 
+        if (currentUser.getId() != existingUser.getId()) {
+            log.error("User not allowed to delete others accounts");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         userRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+        // TODO: write tests for it
     }
 
     @Override

@@ -3,7 +3,7 @@ package hexlet.code.config;
 import hexlet.code.security.CustomAuthenticationFilter;
 import hexlet.code.security.CustomAuthorizationFilter;
 import hexlet.code.security.JwtTokenServiceImpl;
-import hexlet.code.service.UserDetailsServiceImpl;
+import hexlet.code.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

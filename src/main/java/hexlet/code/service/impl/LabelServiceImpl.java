@@ -1,8 +1,9 @@
-package hexlet.code.service;
+package hexlet.code.service.impl;
 
 import hexlet.code.dto.LabelDto;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
+import hexlet.code.service.LabelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class LabelServiceImpl implements LabelService {
     public void deleteLabel(Long id) {
         Label label = this.getLabel(id);
         log.info("Deleting label: " + label.getName());
-        labelRepository.deleteById(id);
+        labelRepository.deleteById(id); // SqlExceptionHelper
     }
 
     @Override
